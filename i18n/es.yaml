@@ -1,0 +1,31 @@
+app_title: "Observatorio de Minería"
+landing:
+  supertitulo: "Observatorio de Minería"
+  titulo:      "El capital minero en Chile y el mundo."
+  acento:      "Documentado."
+  subtitulo:   "Indicadores económicos y productivos de las principales empresas mineras, construidos desde fuentes oficiales."
+  boton:       "Comenzar"
+formato:
+  decimal: ","
+  miles:   "."
+nav:
+  perfil: "Perfil por empresa"
+  comparacion: "Comparación"
+  asistente_documental: "Asistente documental"
+  datos: "Datos"
+  metodologia: "Metodología"
+  quienes_somos: "Quiénes somos"
+chat_documental:
+  titulo: "Asistente documental Codelco"
+  descripcion: "Consulta la memoria anual y los estados financieros consolidados de 2023."
+  saludo: "Hola. Puedo buscar evidencia en los documentos de Codelco 2023."
+  pie: "Las respuestas distinguen evidencia documental, explicaciones de la empresa e inferencias."
+  no_disponible: "Asistente no disponible"
+  corpus_faltante: "Falta el corpus documental. Ejecuta make descarga-chat y make corpus-chat."
+  credencial_faltante: "Falta configurar OPENAI_API_KEY en el entorno del servidor."
+perfil:
+  empresa: "Empresa"
+  serie: "Serie"
+  serie_reportada: "Reportada (CMF)"
+  serie_cobre_propio: "Cobre propio (investigador)"
+  nota_cobre_propio: "Serie cobre propio - construida desde la planilla del investigador (aísla el cobre de producción propia)."

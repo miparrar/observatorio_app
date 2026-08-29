@@ -1,0 +1,8 @@
+.Renviron
+cache/
+src/
+*.duckdb
+*.parquet
+log/
+.Rhistory
+.RData

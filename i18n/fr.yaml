@@ -1,0 +1,31 @@
+app_title: "Observatoire Minier"
+landing:
+  supertitulo: "Observatoire Minier"
+  titulo:      "Le capital minier au Chili et dans le monde."
+  acento:      "Documenté."
+  subtitulo:   "Indicateurs économiques et productifs des principales entreprises minières, construits à partir de sources officielles."
+  boton:       "Commencer"
+formato:
+  decimal: ","
+  miles:   " "
+nav:
+  perfil: "Profil par entreprise"
+  comparacion: "Comparaison"
+  asistente_documental: "Assistant documentaire"
+  datos: "Données"
+  metodologia: "Méthodologie"
+  quienes_somos: "Qui sommes-nous"
+chat_documental:
+  titulo: "Assistant documentaire Codelco"
+  descripcion: "Consultez le rapport annuel et les états financiers consolidés de 2023."
+  saludo: "Bonjour. Je peux rechercher des preuves dans les documents Codelco 2023."
+  pie: "Les réponses distinguent les preuves, les explications de l'entreprise et les inférences."
+  no_disponible: "Assistant indisponible"
+  corpus_faltante: "Le corpus documentaire manque. Exécutez make descarga-chat puis make corpus-chat."
+  credencial_faltante: "OPENAI_API_KEY n'est pas configurée dans l'environnement du serveur."
+perfil:
+  empresa: "Entreprise"
+  serie: "Série"
+  serie_reportada: "Déclarée (CMF)"
+  serie_cobre_propio: "Cuivre propre (chercheur)"
+  nota_cobre_propio: "Série cuivre propre - construite à partir du classeur du chercheur (isole le cuivre de production propre)."

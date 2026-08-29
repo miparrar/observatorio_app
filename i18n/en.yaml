@@ -1,0 +1,31 @@
+app_title: "Mining Observatory"
+landing:
+  supertitulo: "Mining Observatory"
+  titulo:      "Mining capital in Chile and the world."
+  acento:      "Documented."
+  subtitulo:   "Economic and productive indicators of the main mining companies, built from official sources."
+  boton:       "Start"
+formato:
+  decimal: "."
+  miles:   ","
+nav:
+  perfil: "Company profile"
+  comparacion: "Comparison"
+  asistente_documental: "Document assistant"
+  datos: "Data"
+  metodologia: "Methodology"
+  quienes_somos: "About us"
+chat_documental:
+  titulo: "Codelco document assistant"
+  descripcion: "Search the 2023 annual report and consolidated financial statements."
+  saludo: "Hello. I can search for evidence in Codelco's 2023 documents."
+  pie: "Answers distinguish document evidence, company explanations, and inferences."
+  no_disponible: "Assistant unavailable"
+  corpus_faltante: "The document corpus is missing. Run make descarga-chat and make corpus-chat."
+  credencial_faltante: "OPENAI_API_KEY is not configured in the server environment."
+perfil:
+  empresa: "Company"
+  serie: "Series"
+  serie_reportada: "Reported (CMF)"
+  serie_cobre_propio: "Own copper (researcher)"
+  nota_cobre_propio: "Own-copper series - built from the researcher's workbook (isolates own-production copper)."

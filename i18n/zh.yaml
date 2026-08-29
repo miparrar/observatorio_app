@@ -1,0 +1,31 @@
+app_title: "矿业观测站"
+landing:
+  supertitulo: "矿业观测站"
+  titulo:      "智利及全球矿业资本。"
+  acento:      "有据可查。"
+  subtitulo:   "主要矿业公司的经济与生产指标，基于官方来源构建。"
+  boton:       "开始"
+formato:
+  decimal: "."
+  miles:   ","
+nav:
+  perfil: "企业概况"
+  comparacion: "比较"
+  asistente_documental: "文档助手"
+  datos: "数据"
+  metodologia: "方法论"
+  quienes_somos: "关于我们"
+chat_documental:
+  titulo: "Codelco 文档助手"
+  descripcion: "查询 2023 年年度报告和合并财务报表。"
+  saludo: "您好。我可以在 Codelco 2023 年文档中检索证据。"
+  pie: "回答会区分文档证据、公司解释和模型推断。"
+  no_disponible: "助手不可用"
+  corpus_faltante: "缺少文档语料库。请运行 make descarga-chat 和 make corpus-chat。"
+  credencial_faltante: "服务器环境中未配置 OPENAI_API_KEY。"
+perfil:
+  empresa: "公司"
+  serie: "数据系列"
+  serie_reportada: "申报数据 (CMF)"
+  serie_cobre_propio: "自产铜 (研究员)"
+  nota_cobre_propio: "自产铜系列 - 基于研究员工作表构建（分离自产铜部分）。"
