@@ -1,25 +1,18 @@
-# mod_sec03_propiedad.R - Sección 03: Propiedad y deuda.
-# Propiedad desde src/empresas.yaml (dato curado). Deuda desde
-# cache/<e>/endeudamiento.parquet, en los tres cortes de la receta:
-# stock (financiera vs intragrupo), posición por cobrar/por pagar/neto,
+# mod_sec04_deuda.R - Sección 04: Deuda.
+# Deuda desde cache/<e>/endeudamiento.parquet, en los tres cortes de la
+# receta: stock (financiera vs intragrupo), posición por cobrar/por pagar/neto,
 # y capacidad de pago (años de masa de ganancia para pagar la deuda neta).
+# La tabla de propiedad se movió al hero del perfil.
 
-mod_sec03_ui <- function(id) {
+mod_sec04_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    section_header("03", "Propiedad y deuda"),
-    layout_columns(
-      col_widths = c(5, 7),
-      card(
-        card_header("Estructura de propiedad"),
-        card_body(uiOutput(ns("tabla_propiedad"))),
-        nota_pie(texto = "Fuente: registro curado del observatorio (participaciones al último año conocido).")
-      ),
-      card(
-        card_header("Stock de deuda: financiera vs intragrupo (MMUS$)"),
-        highchartOutput(ns("chart_deuda"), height = "320px"),
-        nota_pie(ns("nota_deuda"))
-      )
+    section_header("04", "Deuda"),
+    section_intro("Las estructuras de deuda que sostienen —y condicionan— el negocio."),
+    card(
+      card_header("Stock de deuda: financiera vs intragrupo (MMUS$)"),
+      highchartOutput(ns("chart_deuda"), height = "320px"),
+      nota_pie(ns("nota_deuda"))
     ),
     layout_columns(
       col_widths = c(6, 6),
@@ -39,31 +32,11 @@ mod_sec03_ui <- function(id) {
   )
 }
 
-mod_sec03_server <- function(id, empresa_id) {
+mod_sec04_server <- function(id, empresa_id) {
   moduleServer(id, function(input, output, session) {
 
     d <- reactive({
       series_endeu |> filter(empresa == empresa_id()) |> con_huecos()
-    })
-
-    output$tabla_propiedad <- renderUI({
-      f <- empresas_ficha[[empresa_id()]]
-      filas <- lapply(f$operadores, function(o) {
-        tags$tr(
-          tags$td(o$nombre),
-          tags$td(class = "text-end", glue("{o$pct}%")),
-          tags$td(class = "text-end", o$pais)
-        )
-      })
-      tags$table(
-        class = "table table-sm tabla-propiedad",
-        tags$thead(tags$tr(
-          tags$th("Propietario"),
-          tags$th(class = "text-end", "Participación"),
-          tags$th(class = "text-end", "País")
-        )),
-        tags$tbody(filas)
-      )
     })
 
     output$nota_deuda <- renderText({

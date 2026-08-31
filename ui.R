@@ -1,19 +1,18 @@
+site_url <- Sys.getenv("OBS_SITE_URL", "..")
+
 ui <- page_navbar(
   id    = "nav_principal",
   # SIN fillable: el perfil es una página que SCROLLEA. Con fillable (default de
   # bslib) el contenido se comprime para caber en la altura de la ventana y los
   # gráficos colapsan a franjas ilegibles en pantallas normales.
   fillable = FALSE,
-  title = actionLink(
-    "nav_a_inicio",
-    label = txt$app_title,
-    style = glue(
-      "font-family: '{tipografia$roles$marca$familia}';",
-      "font-weight: {tipografia$roles$marca$peso};",
-      "letter-spacing: {tipografia$roles$marca$tracking};",
-      "text-transform: {tipografia$roles$marca$transform};",
-      "color: inherit; text-decoration: none;"
-    )
+  selected = "perfil",
+  title = tags$a(
+    href = file.path(site_url, "index.html"),
+    target = "_top",
+    title = "Ir al sitio",
+    tags$img(src = "assets/brand/observatorio-logo.svg", alt = txt$app_title, height = "32", width = "32"),
+    tags$span(txt$app_title, class = "navbar-brand-text")
   ),
   theme = bs_theme(
     version      = 5,
@@ -22,7 +21,7 @@ ui <- page_navbar(
     primary      = paleta$primario,
     secondary    = paleta$secundario,
     base_font    = font_google("Inter"),
-    heading_font = font_google("Rajdhani")
+    heading_font = font_google("Space Grotesk")
   ),
   header = tags$head(
     # Favicon inline (SVG data-URI): mata el 404 y marca la pestaña con el cobre
@@ -35,16 +34,18 @@ ui <- page_navbar(
           '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">',
           '<rect width="32" height="32" rx="6" fill="{paleta$texto}"/>',
           '<path d="M6 24 L13 10 L18 19 L22 13 L26 24 Z" fill="{paleta$primario}"/>',
+          '<path d="M13 10 L18 19 L22 13" fill="none" stroke="{paleta$acento_claro}" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>',
+          '<path d="M6 24h20" stroke="{paleta$acento_claro}" stroke-width="1.5"/>',
           "</svg>"
         ), reserved = TRUE)
       )
     ),
     tags$style(HTML(glue(
       "@import url('https://fonts.googleapis.com/css2?",
-      "family=Rajdhani:wght@500;600;700",
+      "family=Space+Grotesk:wght@500;600;700",
       "&family=Inter:wght@400;500;600",
       "&family=IBM+Plex+Mono:wght@400;500",
-      "&family=Lora:wght@400;500;600",
+      "&family=Space+Grotesk:wght@400;500;600",
       "&family=Space+Grotesk:wght@400;500",
       "&display=swap');",
 
@@ -79,15 +80,23 @@ ui <- page_navbar(
       "}}",
 
       # Hero de identidad: panel oscuro, la audacia del perfil vive acá
-      ".hero-card {{",
-      "  background: {paleta$texto};",
+      ".perfil-portada {{ --cobre: #BC5F33; background: linear-gradient(rgba(45, 40, 32, 0.72), rgba(45, 40, 32, 0.72)), url('assets/empresas/mineria-planta-concentradora.png') center/cover; padding: 1.5rem; margin-bottom: 1.25rem; }}",
+      ".perfil-ficha {{",
+      "  background: transparent;",
       "  color: {paleta$fondo};",
-      "  border-radius: 0.5rem;",
+      "  border-radius: 0.15rem;",
       "  padding: 2rem 2.25rem;",
       "  margin-bottom: 1rem;",
       "}}",
+      ".perfil-portada {{ --cobre: #BC5F33; background: linear-gradient(rgba(45, 40, 32, 0.72), rgba(45, 40, 32, 0.72)), url('assets/empresas/mineria-planta-concentradora.png') center/cover; padding: 1.5rem; margin-bottom: 1.25rem; }}",
+      ".perfil-ficha {{",
+      "  border-top: 1px solid rgba(212, 184, 154, 0.45);",
+      "  border-radius: 0;",
+      "  padding: 1.5rem;",
+      "}}",
+      ".comparador-vacio {{ border-left: 3px solid #BC5F33; padding: 1rem; color: #5C5240; }}",
       ".hero-nombre {{",
-      "  font-family: 'Lora', serif;",
+      "  font-family: 'Space Grotesk', sans-serif;",
       "  font-size: 2.4rem;",
       "  font-weight: 500;",
       "  line-height: 1.1;",
@@ -127,6 +136,17 @@ ui <- page_navbar(
       ".ficha-valor {{ font-size: 0.9rem; font-weight: 500; color: {paleta$fondo}; }}",
 
       # KPI strip bajo el hero: tres números, más compactos que el hero viejo
+      ".perfil-portada {{ min-height: 520px; padding: 2rem 1.5rem 1.25rem; background-position: center; }}",
+      ".perfil-portada .perfil-ficha {{ background: transparent; border: 0; padding: 1.5rem 1.25rem 2.5rem; }}",
+      ".perfil-portada .hero-nombre {{ font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 500; letter-spacing: -0.02em; }}",
+      ".perfil-portada .hero-razon {{ font-size: 1rem; }}",
+      ".perfil-portada .ficha-label {{ color: #D4B89A; }}",
+      ".perfil-portada .ficha-valor {{ color: #F5F0E8; }}",
+      ".perfil-portada .kpi-strip .card {{ background: transparent; border: 0; box-shadow: none; color: #F5F0E8; }}",
+      ".perfil-portada .kpi-strip .card-body {{ padding: 1rem 0.75rem; }}",
+      ".perfil-portada .kpi-valor {{ color: #F5F0E8; font-size: clamp(2rem, 3.5vw, 3rem); }}",
+      ".perfil-portada .kpi-etiqueta {{ color: #D4B89A; }}",
+      ".perfil-portada .kpi-delta {{ color: #F5F0E8; border-color: #D4B89A; }}",
       ".kpi-strip .kpi-valor {{ font-size: 2.1rem; }}",
       ".kpi-strip .card-body {{ text-align: center; padding: 1.1rem; }}",
 
@@ -160,7 +180,7 @@ ui <- page_navbar(
 
       ".tabla-propiedad {{ font-size: 0.92rem; }}",
 
-      # Cards: borde quieto, sin sombra; headers uniformes (Rajdhani, regla fina)
+      # Cards: borde quieto, sin sombra; headers uniformes (Space Grotesk, regla fina)
       ".card {{",
       "  border: 1px solid rgba(45, 40, 32, 0.10);",
       "  box-shadow: none;",
@@ -198,7 +218,7 @@ ui <- page_navbar(
       "  margin-bottom: 1.5rem;",
       "}}",
       ".landing-titulo {{",
-      "  font-family: 'Lora', serif;",
+      "  font-family: 'Space Grotesk', sans-serif;",
       "  font-weight: 500;",
       "  font-size: 4.5rem;",
       "  line-height: 1.2;",
@@ -235,41 +255,72 @@ ui <- page_navbar(
       "  background: {paleta$fondo};",
       "  color: {paleta$texto};",
       "}}",
-      ".navbar-nav .nav-link[data-value='inicio'] {{",
-      "  display: none !important;",
-      "}}",
       ".navbar-nav .nav-link {{",
       "  font-family: 'Space Grotesk', sans-serif;",
       "  font-weight: 500;",
       "  font-size: 0.9rem;",
+      "}}",
+
+      # Navbar brand: logo + wordmark clickeable al sitio
+      ".navbar-brand a {{ text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }}",
+      ".navbar-brand-text {{",
+      "  font-family: 'Space Grotesk', sans-serif;",
+      "  font-weight: 500;",
+      "  font-size: 1rem;",
+      "  color: {paleta$texto};",
+      "}}",
+
+      # Puente narrativo entre secciones
+      ".section-intro {{",
+      "  font-style: italic;",
+      "  color: {paleta$tinta_suave};",
+      "  font-size: 0.95rem;",
+      "  line-height: 1.55;",
+      "  max-width: 720px;",
+      "  margin: -0.5rem 0 1.25rem 0.8rem;",
+      "  border-left: 2px solid {paleta$acento_claro};",
+      "  padding-left: 0.9rem;",
+      "}}",
+
+      # Sub-encabezado dentro de una sección (agrupa gráficos)
+      ".sub-header {{",
+      "  font-family: 'Space Grotesk', sans-serif;",
+      "  font-weight: 500;",
+      "  font-size: 1.05rem;",
+      "  color: {paleta$texto};",
+      "  border-left: 2px solid {paleta$secundario};",
+      "  padding-left: 0.6rem;",
+      "  margin: 1.75rem 0 0.75rem;",
+      "}}",
+
+      # Tabla de propiedad en el hero (fondo oscuro)
+      ".hero-tabla-propiedad {{",
+      "  margin: 1rem 0 0;",
+      "  font-size: 0.85rem;",
+      "}}",
+      ".hero-tabla-propiedad th {{",
+      "  color: {paleta$acento_claro};",
+      "  font-family: 'Space Grotesk', sans-serif;",
+      "  font-weight: 500;",
+      "  font-size: 0.72rem;",
+      "  text-transform: uppercase;",
+      "  letter-spacing: 0.08em;",
+      "  border-bottom: 1px solid rgba(212, 184, 154, 0.3);",
+      "}}",
+      ".hero-tabla-propiedad td {{",
+      "  color: {paleta$fondo};",
+      "  border-color: rgba(212, 184, 154, 0.15);",
       "}}"
     )))
   ),
 
-  # ── Inicio ────────────────────────────────────────────────────────────────
-  nav_panel(
-    value = "inicio",
-    title = "Inicio",
-    div(
-      class = "landing-panel",
-      div(
-        div(
-          class = "landing-titulo",
-          txt$landing$titulo, " ",
-          span(class = "landing-acento", txt$landing$acento)
-        ),
-        div(class = "landing-subtitulo", txt$landing$subtitulo),
-        actionButton(
-          "btn_comenzar",
-          label  = paste(txt$landing$boton, "→"),
-          class  = "landing-boton"
-        )
-      )
-    )
-  ),
+  nav_item(a("Inicio", href = file.path(site_url, "index.html"), target = "_top")),
+  nav_item(a("Metodología", href = file.path(site_url, "metodologia.html"), target = "_top")),
+  nav_item(a("Quiénes somos", href = file.path(site_url, "quienes-somos.html"), target = "_top")),
 
   # ── Perfil por empresa (módulos curados; docs/perfil_esquema.md §6) ───────
   nav_panel(
+    value = "perfil",
     title = txt$nav$perfil,
 
     layout_columns(
@@ -285,18 +336,15 @@ ui <- page_navbar(
     mod_sec04_ui("sec04")
   ),
 
-  # Asistente documental: interfaz solamente. El retrieval y el razonamiento
-  # viven en el modulo y en el corpus procesado del cache.
   nav_panel(
-    title = txt$nav$asistente_documental,
-    mod_chat_documental_ui("chat_documental")
-  ),
-
-  # ── Datos: descarga abierta de las series (CSV/XLSX, tidy o años en columnas)
-  nav_panel(title = txt$nav$datos, mod_datos_ui("datos")),
-
-  # ── Otras pestañas (por desarrollar) ─────────────────────────────────────
-  nav_panel(title = txt$nav$comparacion),
-  nav_panel(title = txt$nav$metodologia),
-  nav_panel(title = txt$nav$quienes_somos)
+    value = "comparador",
+    title = txt$nav$comparacion,
+    card(
+      card_header("Comparador"),
+      card_body(
+        p("Selecciona empresas para contrastar sus indicadores financieros y productivos."),
+        div(class = "comparador-vacio", "Módulo en construcción")
+      )
+    )
+  )
 )

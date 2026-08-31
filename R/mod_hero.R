@@ -5,7 +5,7 @@
 
 mod_hero_ui <- function(id) {
   ns <- NS(id)
-  tagList(
+  div(class = "perfil-portada",
     uiOutput(ns("identidad")),
     layout_columns(
       col_widths = c(4, 4, 4),
@@ -43,28 +43,37 @@ mod_hero_server <- function(id, empresa_id, datos) {
 
     output$identidad <- renderUI({
       f <- ficha()
-      operadores <- paste(
-        vapply(f$operadores, function(o) glue("{o$nombre} ({o$pct}%)"), character(1)),
-        collapse = " · "
-      )
+      productos <- if (is.null(f$productos)) "Cobre" else paste(f$productos, collapse = " · ")
       div(
-        class = "hero-card",
+        class = "perfil-ficha",
         layout_columns(
-          col_widths = c(7, 5),
+          col_widths = c(8, 4),
           div(
+            div(class = "perfil-kicker", "PERFIL DE EMPRESA"),
             div(class = "hero-nombre", f$nombre_corto),
             div(class = "hero-razon", f$razon_social),
             div(class = "hero-editorial", f$descripcion_editorial)
           ),
           layout_columns(
             col_widths = c(6, 6),
-            ficha_campo("Tipo",         f$tipo),
             ficha_campo("Controlador",  glue("{f$controlador} ({f$controlador_pct}%)")),
             ficha_campo("Constitución", f$constitucion),
             ficha_campo("Ubicación",    f$ubicacion),
-            ficha_campo("Subsector",    f$subsector),
-            ficha_campo("Propiedad",    operadores)
+            ficha_campo("Principales productos", productos)
           )
+        ),
+        if (length(f$operadores) > 0) tags$table(
+          class = "table table-sm hero-tabla-propiedad",
+          tags$thead(tags$tr(
+            tags$th("Propietario"),
+            tags$th(class = "text-end", "Participación"),
+            tags$th(class = "text-end", "País")
+          )),
+          tags$tbody(lapply(f$operadores, function(o) tags$tr(
+            tags$td(o$nombre),
+            tags$td(class = "text-end", glue("{o$pct}%")),
+            tags$td(class = "text-end", o$pais)
+          )))
         )
       )
     })

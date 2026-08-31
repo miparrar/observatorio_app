@@ -1,18 +1,19 @@
-# mod_sec02_apropiacion.R - Sección 02: Apropiación del excedente.
+# mod_sec03_apropiacion.R - Sección 03: Apropiación de plusvalía.
 # Del excedente total (PBT + gasto financiero), cuánto se apropia cada quien:
 # acreedores · Estado · dueños · lo que queda en la empresa. Solo se muestra
 # para empresas con el reparto COMPLETO (receta src/recetas/distribucion.yaml);
 # para el resto, el estado vacío declara qué falta (la cascada en el diccionario).
 
-mod_sec02_ui <- function(id) {
+mod_sec03_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    section_header("02", "Apropiación del excedente"),
+    section_header("03", "Apropiación de plusvalía"),
+    section_intro("La ganancia no se queda toda en la empresa. Esta sección muestra cómo se reparte el excedente."),
     uiOutput(ns("contenido"))
   )
 }
 
-mod_sec02_server <- function(id, empresa_id) {
+mod_sec03_server <- function(id, empresa_id) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -45,12 +46,12 @@ mod_sec02_server <- function(id, empresa_id) {
         layout_columns(
           col_widths = c(7, 5),
           card(
-            card_header("Reparto del excedente (% del total)"),
+            card_header("Reparto de la plusvalía (% del total)"),
             highchartOutput(ns("chart_reparto"), height = "380px"),
             nota_pie(ns("nota_reparto"))
           ),
           card(
-            card_header("Reparto en montos (MMUS$)"),
+            card_header("Reparto en montos de plusvalía (MMUS$)"),
             highchartOutput(ns("chart_montos"), height = "380px")
           )
         )

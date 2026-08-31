@@ -7,6 +7,16 @@ section_header <- function(numero, titulo) {
   div(class = "section-header", glue("{numero} · {titulo}"))
 }
 
+# Puente narrativo entre secciones (frase corta que conecta con la anterior)
+section_intro <- function(texto) {
+  div(class = "section-intro", texto)
+}
+
+# Sub-encabezado dentro de una sección (agrupa gráficos relacionados)
+sub_header <- function(titulo) {
+  div(class = "sub-header", titulo)
+}
+
 # Tarjeta de pendiente declarado: qué falta, por qué y qué viene
 pendiente_card <- function(titulo, ...) {
   div(

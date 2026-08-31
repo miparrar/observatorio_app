@@ -1,0 +1,20 @@
+version: 1
+schema: empresa-media
+license_policy: "No publicar ni redistribuir recursos con licencia desconocida."
+assets:
+  - id: mineria-planta-concentradora
+    empresa: _generic
+    path: assets/empresas/mineria-planta-concentradora.png
+    role: profile-hero
+    taxonomy:
+      sector: minería
+      subsector: cobre
+      escena: planta_concentradora
+      tratamiento: fotografía_documental
+    alt: "Interior de una planta concentradora minera con un molino de gran escala."
+    author: "Pendiente de identificar"
+    source: "Imagen proporcionada por el usuario en esta conversación"
+    license: "Por confirmar"
+    attribution: "No publicar hasta confirmar autoría y licencia."
+    review_status: pending
+    notes: "Recurso provisional reutilizable como fallback para perfiles sin foto propia."

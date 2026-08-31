@@ -1,12 +1,13 @@
-# mod_sec04_contexto.R - Sección 04: Contexto productivo (COCHILCO).
+# mod_sec01_produccion.R - Sección 01: Producción (COCHILCO).
 # Producción de cobre mina: la empresa del perfil vs el total país, en absoluto
 # y en participación relativa (%). El precio del cobre vive en la sección 01
 # (junto a la tasa). Solo lee cache/cochilco/ (make cochilco).
 
-mod_sec04_ui <- function(id) {
+mod_sec01_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    section_header("04", "Contexto: producción de cobre (Chile)"),
+    section_header("01", "Producción"),
+    section_intro("Cuánto cobre extrae esta mina y qué peso tiene en la producción nacional."),
     layout_columns(
       col_widths = c(6, 6),
       card(
@@ -23,7 +24,7 @@ mod_sec04_ui <- function(id) {
   )
 }
 
-mod_sec04_server <- function(id, empresa_id) {
+mod_sec01_server <- function(id, empresa_id) {
   moduleServer(id, function(input, output, session) {
 
     total <- produccion_cu |> filter(item == "Total Chile")

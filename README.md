@@ -33,6 +33,7 @@ R -e 'shiny::runApp(".", port=7777)'
 |---|---|---|
 | `OBS_DATA_DIR` | `../observatorio_minero` | Raiz de cache/ del pipeline |
 | `OBS_CONFIG_DIR` | `$OBS_DATA_DIR/src` | YAMLs de configuracion |
+| `OBS_SITE_URL` | `..` | URL base del sitio Quarto para los enlaces de navegacion |
 
 Para deploy, setear `OBS_DATA_DIR=.` y `OBS_CONFIG_DIR=.` despues de correr
 `prepara_deploy.R`.

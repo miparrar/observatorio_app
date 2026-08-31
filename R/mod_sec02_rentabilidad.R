@@ -1,16 +1,19 @@
-# mod_sec01_rentabilidad.R - Sección 01: Rentabilidad.
+# mod_sec02_rentabilidad.R - Sección 02: Rentabilidad.
 # Cadena causal completa: la tasa -> ganancia vs capital (base 100) ->
 # qué empuja el capital (componentes del KTA) -> composición del costo ->
 # ganancia vs costo. Cada gráfico lleva su explicación; la trazabilidad
 # (origen del numerador y la depreciación) va como nota al pie, no escondida.
 
-mod_sec01_ui <- function(id) {
+mod_sec02_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    section_header("01", "Rentabilidad"),
+    section_header("02", "Rentabilidad"),
+    section_intro("De la producción física pasamos a la financiera: la tasa de ganancia y los componentes que la empujan."),
     uiOutput(ns("estado")),
     conditionalPanel(
       condition = "output.tiene_tg", ns = ns,
+
+      sub_header("La tasa y sus componentes"),
 
     card(
       card_header("Serie histórica de la tasa de ganancia"),
@@ -21,19 +24,21 @@ mod_sec01_ui <- function(id) {
     layout_columns(
       col_widths = c(6, 6),
       card(
-        card_header("Qué hay detrás de la tasa: ganancia vs capital (base 100)"),
+        card_header("Ganancia y capital adelantado (base 100)"),
         highchartOutput(ns("chart_componentes"), height = "400px")
       ),
       card(
-        card_header("Qué empuja el capital: componentes del KTA (MMUS$)"),
+        card_header("Componentes del KTA (base 100)"),
         highchartOutput(ns("chart_kta_comp"), height = "400px")
       )
     ),
 
+      sub_header("Estructura del costo"),
+
     layout_columns(
       col_widths = c(6, 6),
       card(
-        card_header("Composición del costo (trabajo · depreciación · insumos)"),
+        card_header("Composición del costo (remuneraciones · depreciación · insumos)"),
         highchartOutput(ns("chart_costo"), height = "360px"),
         nota_pie(ns("nota_costo"))
       ),
@@ -46,7 +51,7 @@ mod_sec01_ui <- function(id) {
   )
 }
 
-mod_sec01_server <- function(id, datos) {
+mod_sec02_server <- function(id, datos) {
   moduleServer(id, function(input, output, session) {
 
     # Empresas sin TG (SEC/US-GAAP): la sección lo DECLARA en vez de esconderse.
@@ -142,20 +147,18 @@ mod_sec01_server <- function(id, datos) {
     output$chart_kta_comp <- renderHighchart({
       req(nrow(datos()) > 0)
       dd <- datos()
-      grafico_base(dd$anio, titulo_y = "MMUS$") |>
-        hc_subtitle(text = "El componente que más crece explica el movimiento del denominador",
-                    style = est_eje) |>
+      grafico_base(dd$anio, titulo_y = glue("Índice (base 100 = {dd$anio[1]})")) |>
         hc_add_series(name = "Capital fijo (PP&E productivo)", type = "line",
-                      data = a_mmus(dd$cap_fijo_adelantado), color = paleta$datos[[2]]) |>
+                      data = base100(dd$cap_fijo_adelantado), color = paleta$datos[[2]]) |>
         hc_add_series(name = "Circulante constante (inventarios)", type = "line",
-                      data = a_mmus(dd$circ_constante_adelantado), color = paleta$datos[[3]]) |>
-        hc_add_series(name = "Capital variable (trabajo)", type = "line",
-                      data = a_mmus(dd$cap_variable_adelantado), color = paleta$datos[[1]]) |>
+                      data = base100(dd$circ_constante_adelantado), color = paleta$datos[[3]]) |>
+        hc_add_series(name = "Capital variable (remuneraciones)", type = "line",
+                      data = base100(dd$cap_variable_adelantado), color = paleta$datos[[1]]) |>
         hc_add_series(name = "Efectivo", type = "line",
-                      data = a_mmus(dd$efectivo), color = paleta$datos[[4]]) |>
+                      data = base100(dd$efectivo), color = paleta$datos[[4]]) |>
         hc_add_series(name = "Cuentas comerciales netas", type = "line",
-                      data = a_mmus(dd$circ_netas_adelantado), color = paleta$datos[[5]]) |>
-        hc_tooltip(formatter = tt_mmus) |>
+                      data = base100(dd$circ_netas_adelantado), color = paleta$datos[[5]]) |>
+        hc_tooltip(formatter = tt_num) |>
         hc_legend(enabled = TRUE)
     })
 
@@ -165,7 +168,7 @@ mod_sec01_server <- function(id, datos) {
       dd <- datos()
       grafico_base(dd$anio, titulo_y = "MMUS$") |>
         hc_plotOptions(column = list(stacking = "normal")) |>
-        hc_add_series(name = "Trabajo", type = "column",
+        hc_add_series(name = "Remuneraciones", type = "column",
                       data = a_mmus(dd$cap_variable_consumido), color = paleta$datos[[1]]) |>
         hc_add_series(name = "Depreciación", type = "column",
                       data = a_mmus(dd$cap_fijo_consumido), color = paleta$datos[[2]]) |>
