@@ -1,0 +1,96 @@
+paleta_activa: altiplano
+
+paletas:
+
+  altiplano:
+    fondo:     "#F5F0E8"
+    texto:     "#2D2820"
+    primario:  "#BC5F33"    # cobre - alineado con datos[1]; 3.8:1 sobre fondo (ok titulares)
+    secundario: "#8B6B45"
+    acento:    "#1D6A96"
+    # Tinta para texto secundario (etiquetas, notas al pie): 6.8:1 sobre fondo.
+    # El secundario (4.3:1) queda para acentos, no para texto chico.
+    tinta_suave: "#5C5240"
+    # Claro para texto sobre paneles oscuros (landing): 7.8:1 sobre texto.
+    acento_claro: "#D4B89A"
+    # Paleta categorica VALIDADA (dataviz: banda de luminosidad, piso de croma,
+    # separacion CVD adyacente >=12, contraste >=3:1 sobre #F5F0E8 - los 4 PASS).
+    # Orden FIJO por entidad, nunca ciclado: 1 cobre, 2 petroleo, 3 ocre, 4 oliva, 5 vino.
+    datos:
+      - "#BC5F33"
+      - "#1D6A96"
+      - "#9C7010"
+      - "#4E7A3D"
+      - "#9C4166"
+
+  crepusculo:
+    fondo:     "#1A1525"
+    texto:     "#F5EDE8"
+    primario:  "#C4547A"
+    secundario: "#8B4A6B"
+    acento:    "#6B7A45"
+    datos:
+      - "#C4547A"
+      - "#6B7A45"
+      - "#8B4A6B"
+      - "#D4A0B0"
+      - "#A0B070"
+
+tipografia:
+  google_fonts:
+    - "Rajdhani:wght@500;600;700"
+    - "Inter:wght@400;500;600"
+    - "IBM+Plex+Mono:wght@400;500"
+
+  roles:
+    marca:
+      familia: "Rajdhani"
+      peso: 700
+      tamaño: "1.5rem"
+      tracking: "0.15em"
+      transform: uppercase
+
+    titulo:
+      familia: "Rajdhani"
+      peso: 600
+      tamaño: "1.25rem"
+      tracking: "0.05em"
+
+    subtitulo:
+      familia: "Inter"
+      peso: 500
+      tamaño: "1rem"
+      tracking: "0.01em"
+
+    pestaña:
+      familia: "Space Grotesk"
+      peso: 500
+      tamaño: "0.9rem"
+      tracking: "0"
+
+    texto:
+      familia: "Inter"
+      peso: 400
+      tamaño: "0.875rem"
+
+    grafico:
+      familia: "Inter"
+      peso: 400
+      tamaño: "0.75rem"
+
+    numero:
+      familia: "IBM Plex Mono"
+      peso: 400
+      tamaño: inherit
+
+    kpi:
+      familia: "Rajdhani"
+      peso: 700
+      tamaño: "2.5rem"
+      tracking: "0.02em"
+
+    etiqueta:
+      familia: "Inter"
+      peso: 400
+      tamaño: "0.7rem"
+      tracking: "0.01em"

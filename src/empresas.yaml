@@ -1,0 +1,126 @@
+empresas:
+
+  - id: escondida
+    nombre_corto: Escondida
+    razon_social: Minera Escondida Limitada
+    tipo: privada
+    subsector: Cobre
+    item_produccion: "Escondida"
+    constitucion: 1985
+    ubicacion: Región de Antofagasta
+    controlador: BHP
+    controlador_pct: 57.5
+    operadores:
+      - nombre: BHP
+        pais: Australia
+        pct: 57.5
+      - nombre: Rio Tinto
+        pais: Reino Unido
+        pct: 30
+      - nombre: JECO (consorcio japonés)
+        pais: Japón
+        pct: 12.5
+    descripcion_editorial: >
+      La mayor mina de cobre del mundo. Reporta a la CMF como sociedad afecta
+      al royalty minero (no emite valores); sus estados pasan del español al
+      inglés en 2014 y de formato por función a condensado.
+
+  - id: collahuasi
+    nombre_corto: Collahuasi
+    razon_social: Compañía Minera Doña Inés de Collahuasi SCM
+    tipo: privada
+    subsector: Cobre
+    item_produccion: "Collahuasi"
+    constitucion: 1996
+    ubicacion: Región de Tarapacá
+    controlador: Anglo American / Glencore
+    controlador_pct: 88
+    operadores:
+      - nombre: Anglo American
+        pais: Reino Unido
+        pct: 44
+      - nombre: Glencore
+        pais: Suiza
+        pct: 44
+      - nombre: Japan Collahuasi Resources
+        pais: Japón
+        pct: 12
+    descripcion_editorial: >
+      Uno de los mayores yacimientos de cobre del mundo, en producción desde
+      1999. Su serie CMF cambia de idioma (inglés 2012, español después) y de
+      unidad (US$ a miles) entre años; no publica el gasto total de personal
+      antes de 2017.
+
+  - id: codelco
+    nombre_corto: Codelco
+    razon_social: Corporación Nacional del Cobre de Chile
+    tipo: estatal
+    subsector: Cobre
+    item_produccion: "Total CODELCO"   # nombre exacto del item en COCHILCO
+    constitucion: 1976
+    ubicacion: Chile (divisiones múltiples)
+    controlador: Estado de Chile
+    controlador_pct: 100
+    operadores:
+      - nombre: Codelco
+        pais: Chile
+        pct: 100
+    descripcion_editorial: >
+      Codelco es la empresa estatal del cobre de Chile, creada en 1976 y
+      controlada en un 100% por el Estado. Opera múltiples divisiones mineras a
+      lo largo del país y se mantiene entre los mayores productores de cobre del
+      mundo. Desde 2025 participa también en la industria del litio mediante una
+      asociación con SQM para la explotación del Salar de Atacama.
+
+  - id: sqm
+    nombre_corto: SQM
+    tipo: privada
+    operadores:
+      - nombre: SQM
+        pais: Chile
+
+  - id: albemarle
+    nombre_corto: Albemarle
+    tipo: privada
+    operadores:
+      - nombre: Albemarle
+        pais: Estados Unidos
+
+  - id: freeport
+    nombre_corto: Freeport
+    razon_social: Freeport-McMoRan Inc.
+    tipo: privada
+    subsector: Cobre
+    constitucion: 1987
+    ubicacion: Phoenix, EE.UU. (opera América y Asia)
+    controlador: Capital disperso (NYSE)
+    controlador_pct: 100
+    operadores:
+      - nombre: Accionistas bursátiles (NYSE)
+        pais: Estados Unidos
+        pct: 100
+    descripcion_editorial: >
+      Una de las mayores cupríferas del mundo (Grasberg, Cerro Verde, y socia de
+      Codelco en El Abra). Reporta a la SEC en US-GAAP: no desglosa el gasto en
+      trabajo, así que su tasa de ganancia no es computable con esta fuente.
+
+  - id: southerncopper
+    nombre_corto: Southern Copper
+    razon_social: Southern Copper Corporation
+    tipo: privada
+    subsector: Cobre
+    constitucion: 1952
+    ubicacion: Phoenix, EE.UU. (opera Perú y México)
+    controlador: Grupo México
+    controlador_pct: 88.9
+    operadores:
+      - nombre: Grupo México
+        pais: México
+        pct: 88.9
+      - nombre: Accionistas bursátiles (NYSE)
+        pais: Estados Unidos
+        pct: 11.1
+    descripcion_editorial: >
+      Controlada por Grupo México, opera Toquepala, Cuajone y Buenavista.
+      Reporta a la SEC en US-GAAP: sin desglose del trabajo, su tasa de
+      ganancia no es computable con esta fuente.

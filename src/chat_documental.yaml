@@ -1,0 +1,72 @@
+# Corpus documental del chatbot. La captura es explicita y queda fuera de
+# `make pipeline`. El piloto acepta solamente Codelco y un periodo por ejecucion.
+
+metadata:
+  version: 1
+  empresa: "codelco"
+  periodo: 2023
+  descripcion: "Piloto documental Codelco 2023"
+
+database:
+  path: "cache/observatorio_minero.duckdb"
+  schema: "documental"
+
+captura:
+  raw_dir: "data_raw/documental"
+  timeout_segundos: 120
+  user_agent: "Observatorio Minero - investigacion documental"
+
+extraccion:
+  max_chars_fragmento: 1600
+  min_chars_fragmento: 180
+  min_chars_pagina_texto: 120
+  idioma_ocr: "spa"
+
+retrieval:
+  max_documentos: 20
+  max_pasajes: 12
+  chars_extracto: 600
+  stopwords:
+    - a
+    - al
+    - con
+    - de
+    - del
+    - el
+    - en
+    - es
+    - la
+    - las
+    - los
+    - para
+    - por
+    - que
+    - se
+    - su
+    - sus
+    - un
+    - una
+    - y
+
+llm:
+  proveedor: "openai"
+  modelo_default: "gpt-5-mini"
+
+documentos:
+  - document_id: "codelco-memoria-anual-2023"
+    empresa: "codelco"
+    anio: 2023
+    tipo_documento: "memoria_anual"
+    titulo: "Memoria Anual Codelco 2023"
+    archivo: "memoria_codelco_2023.pdf"
+    url: "https://www.codelco.com/prontus_codelco/site/docs/20240404/20240404191040/memoria_codelco_2023.pdf"
+    sha256: null
+
+  - document_id: "codelco-estados-financieros-2023"
+    empresa: "codelco"
+    anio: 2023
+    tipo_documento: "estados_financieros"
+    titulo: "Estados Financieros Consolidados Codelco 2023"
+    archivo: "estados_financieros_codelco_2023.pdf"
+    url: "https://www.codelco.com/prontus_codelco/site/docs/20230503/20230503101149/estados_financieros_consolidados_61704000_202312.pdf"
+    sha256: null

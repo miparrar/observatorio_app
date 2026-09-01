@@ -1,0 +1,13 @@
+# Config del perfil por empresa (dashboard).
+# Empresas PUBLICADAS en el selector del perfil: solo las que tienen serie
+# reportada suficientemente larga y validada. Las demás (anglosur, collahuasi,
+# teck, el_abra) tienen tasa_ganancia.parquet pero series aún cortas/parciales;
+# se suman acá cuando su serie completa esté canonicalizada.
+# Las secciones y series del perfil: docs/perfil_esquema.md §8.
+# SEC (freeport/southerncopper): OMITIDAS del dashboard por decision 2026-07-06
+# (lo minimo bien = CMF primero); su pipeline sigue vivo (make sec) y vuelven
+# agregandolas aca.
+empresas:
+  - codelco
+  - escondida
+  - collahuasi   # serie reportada 2016-2025 (años previos pendientes de mapping)

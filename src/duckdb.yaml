@@ -1,0 +1,60 @@
+metadata:
+  version: 2
+
+database:
+  path: cache/observatorio_minero.duckdb
+  motherduck_database: observatorio_minero
+  extension_directory: null
+  threads: 2
+  memory_limit: "1GB"
+  schema: financiero
+  context_schema: contexto
+
+datasets:
+  - name: hechos_canonicos
+    file: hechos_canonicos.parquet
+    table: hechos_canonicos
+    company_column: empresa_nombre
+    company_matches_slug: false
+    year_column: anio_dato
+    key_columns: [anio_dato, concepto_canonico, dimensiones, es_instante]
+    required: true
+
+  - name: tasa_ganancia
+    file: tasa_ganancia.parquet
+    table: tasa_ganancia
+    company_column: empresa
+    year_column: anio
+    key_columns: [anio, fuente, variante]
+    required: false
+
+  - name: endeudamiento
+    file: endeudamiento.parquet
+    table: endeudamiento
+    company_column: empresa
+    year_column: anio
+    key_columns: [anio, fuente]
+    required: false
+
+  - name: distribucion
+    file: distribucion.parquet
+    table: distribucion
+    company_column: empresa
+    year_column: anio
+    key_columns: [anio, fuente]
+    required: false
+
+context_datasets:
+  - name: precio_cobre_anual
+    file: cochilco/precio_cobre_anual.parquet
+    table: precio_cobre_anual
+    year_column: anio
+    key_columns: [serie, anio]
+    required: true
+
+  - name: produccion_cobre_empresa_anual
+    file: cochilco/produccion_cobre_empresa_anual.parquet
+    table: produccion_cobre_empresa_anual
+    year_column: anio
+    key_columns: [item, anio]
+    required: true
