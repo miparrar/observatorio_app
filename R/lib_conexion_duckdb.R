@@ -148,9 +148,15 @@ abrir_conexion_observatorio <- function(
       ))
       DBI::dbExecute(
         con,
-        paste0("ATTACH ", database_sql, " AS app_data (READ_ONLY)")
+        paste0("ATTACH ", database_sql, " (READ_ONLY)")
       )
-      DBI::dbExecute(con, "USE app_data")
+      DBI::dbExecute(
+        con,
+        paste0(
+          "USE ",
+          as.character(DBI::dbQuoteIdentifier(con, database_name))
+        )
+      )
     }, error = function(error) {
       if (DBI::dbIsValid(con)) DBI::dbDisconnect(con, shutdown = TRUE)
       stop(
