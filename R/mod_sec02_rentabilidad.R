@@ -6,47 +6,47 @@
 
 mod_sec02_ui <- function(id) {
   ns <- NS(id)
-  tagList(
+  div(
+    class = "perfil-seccion perfil-seccion-rentabilidad",
     section_header("02", "Rentabilidad"),
-    section_intro("De la producción física pasamos a la financiera: la tasa de ganancia y los componentes que la empujan."),
     uiOutput(ns("estado")),
     conditionalPanel(
       condition = "output.tiene_tg", ns = ns,
 
-      sub_header("La tasa y sus componentes"),
+      sub_header("Evolución de la rentabilidad"),
 
-    card(
-      card_header("Serie histórica de la tasa de ganancia"),
-      highchartOutput(ns("chart_tasa"), height = "380px"),
-      nota_pie(ns("nota_serie"))
-    ),
-
-    layout_columns(
-      col_widths = c(6, 6),
       card(
-        card_header("Ganancia y capital adelantado (base 100)"),
-        highchartOutput(ns("chart_componentes"), height = "400px")
+        card_header(panel_header("Tasa de ganancia y precio del cobre", "por año")),
+        highchartOutput(ns("chart_tasa"), height = "380px"),
+        nota_pie(ns("nota_serie"))
       ),
-      card(
-        card_header("Componentes del KTA (base 100)"),
-        highchartOutput(ns("chart_kta_comp"), height = "400px")
-      )
-    ),
 
-      sub_header("Estructura del costo"),
-
-    layout_columns(
-      col_widths = c(6, 6),
-      card(
-        card_header("Composición del costo (remuneraciones · depreciación · insumos)"),
-        highchartOutput(ns("chart_costo"), height = "360px"),
-        nota_pie(ns("nota_costo"))
+      layout_columns(
+        col_widths = c(6, 6),
+        card(
+          card_header(panel_header("Ganancia y capital adelantado", "base 100")),
+          highchartOutput(ns("chart_componentes"), height = "400px")
+        ),
+        card(
+          card_header(panel_header("Componentes del capital", "base 100")),
+          highchartOutput(ns("chart_kta_comp"), height = "400px")
+        )
       ),
-      card(
-        card_header("Ganancia bruta y costo de ventas (MMUS$)"),
-        highchartOutput(ns("chart_ganancia"), height = "360px")
+
+      sub_header("Estructura de costos"),
+
+      layout_columns(
+        col_widths = c(6, 6),
+        card(
+          card_header(panel_header("Composición del costo", "MMUS$")),
+          highchartOutput(ns("chart_costo"), height = "360px"),
+          nota_pie(ns("nota_costo"))
+        ),
+        card(
+          card_header(panel_header("Ganancia bruta y costo de ventas", "MMUS$")),
+          highchartOutput(ns("chart_ganancia"), height = "360px")
+        )
       )
-    )
     )
   )
 }

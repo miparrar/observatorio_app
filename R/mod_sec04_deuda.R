@@ -6,23 +6,23 @@
 
 mod_sec04_ui <- function(id) {
   ns <- NS(id)
-  tagList(
+  div(
+    class = "perfil-seccion perfil-seccion-deuda",
     section_header("04", "Deuda"),
-    section_intro("Las estructuras de deuda que sostienen —y condicionan— el negocio."),
     card(
-      card_header("Stock de deuda: financiera vs intragrupo (MMUS$)"),
+      card_header(panel_header("Stock de deuda", "MMUS$")),
       highchartOutput(ns("chart_deuda"), height = "320px"),
       nota_pie(ns("nota_deuda"))
     ),
     layout_columns(
       col_widths = c(6, 6),
       card(
-        card_header("Posición comercial: por cobrar, por pagar y neto (MMUS$)"),
+        card_header(panel_header("Posición comercial", "MMUS$")),
         highchartOutput(ns("chart_posicion"), height = "340px"),
         nota_pie(ns("nota_posicion"))
       ),
       card(
-        card_header("Capacidad de pago"),
+        card_header(panel_header("Capacidad de pago", "años de ganancia")),
         highchartOutput(ns("chart_capacidad"), height = "340px"),
         nota_pie(texto = paste(
           "Años de pago = deuda neta (deuda total - efectivo) / masa de ganancia del año.",

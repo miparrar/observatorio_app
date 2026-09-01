@@ -1,5 +1,4 @@
 server <- function(input, output, session) {
-
   # Empresa seleccionada y su serie reportada, con los años faltantes como NA
   # (un hueco debe VERSE en los gráficos, no desaparecer del eje).
   empresa_id <- reactive({
@@ -19,5 +18,11 @@ server <- function(input, output, session) {
   mod_sec02_server("sec02", datos)
   mod_sec03_server("sec03", empresa_id)
   mod_sec04_server("sec04", empresa_id)
+
+  contexto_chat <- reactive({
+    id <- req(empresa_id())
+    list(empresa = unname(nombre_empresa[id]))
+  })
+  mod_chat_documental_server("chat", contexto = contexto_chat)
 
 }

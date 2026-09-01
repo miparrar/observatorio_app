@@ -15,15 +15,8 @@ leer_config_chat_documental <- function(
   config
 }
 
-abrir_corpus_documental <- function(database_path, read_only = TRUE) {
-  if (!fs::file_exists(database_path)) {
-    stop("Corpus documental no encontrado: ", database_path, call. = FALSE)
-  }
-  DBI::dbConnect(
-    duckdb::duckdb(),
-    dbdir = database_path,
-    read_only = read_only
-  )
+abrir_corpus_documental <- function(database_target, read_only = TRUE) {
+  abrir_conexion_observatorio(database_target, read_only = read_only)
 }
 
 cerrar_corpus_documental <- function(con) {
@@ -34,19 +27,12 @@ cerrar_corpus_documental <- function(con) {
 }
 
 corpus_documental_disponible <- function(
-  database_path,
+  con,
   schema = "documental",
   tablas_requeridas = c("documentos", "pasajes", "metadata_corpus")
 ) {
-  if (!fs::file_exists(database_path)) return(FALSE)
+  if (is.null(con) || !DBI::dbIsValid(con)) return(FALSE)
   if (!grepl("^[a-z_][a-z0-9_]*$", schema)) return(FALSE)
-
-  con <- tryCatch(
-    abrir_corpus_documental(database_path, read_only = TRUE),
-    error = function(error) NULL
-  )
-  if (is.null(con)) return(FALSE)
-  on.exit(cerrar_corpus_documental(con), add = TRUE)
 
   tablas <- DBI::dbGetQuery(
     con,

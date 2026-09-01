@@ -6,9 +6,9 @@
 
 mod_sec03_ui <- function(id) {
   ns <- NS(id)
-  tagList(
+  div(
+    class = "perfil-seccion perfil-seccion-apropiacion",
     section_header("03", "Apropiación de plusvalía"),
-    section_intro("La ganancia no se queda toda en la empresa. Esta sección muestra cómo se reparte el excedente."),
     uiOutput(ns("contenido"))
   )
 }
@@ -46,12 +46,12 @@ mod_sec03_server <- function(id, empresa_id) {
         layout_columns(
           col_widths = c(7, 5),
           card(
-            card_header("Reparto de la plusvalía (% del total)"),
+            card_header(panel_header("Distribución del excedente", "% del total")),
             highchartOutput(ns("chart_reparto"), height = "380px"),
             nota_pie(ns("nota_reparto"))
           ),
           card(
-            card_header("Reparto en montos de plusvalía (MMUS$)"),
+            card_header(panel_header("Distribución del excedente", "MMUS$")),
             highchartOutput(ns("chart_montos"), height = "380px")
           )
         )

@@ -2,9 +2,13 @@
 # Principio del perfil: VISUALIZAR Y EXPLICAR (docs/perfil_esquema.md §6) -
 # los estados vacíos son contenido: declaran qué falta y por qué.
 
-# Encabezado de sección numerado ("01 · Rentabilidad")
+# Encabezado de sección numerado.
 section_header <- function(numero, titulo) {
-  div(class = "section-header", glue("{numero} · {titulo}"))
+  div(
+    class = "section-header",
+    span(class = "section-number", numero),
+    h2(class = "section-title", titulo)
+  )
 }
 
 # Puente narrativo entre secciones (frase corta que conecta con la anterior)
@@ -15,6 +19,15 @@ section_intro <- function(texto) {
 # Sub-encabezado dentro de una sección (agrupa gráficos relacionados)
 sub_header <- function(titulo) {
   div(class = "sub-header", titulo)
+}
+
+# Encabezado compacto para una tarjeta de datos: título + unidad visible.
+panel_header <- function(titulo, unidad = NULL) {
+  div(
+    class = "panel-header",
+    span(class = "panel-title", titulo),
+    if (!is.null(unidad)) span(class = "panel-unit", unidad)
+  )
 }
 
 # Tarjeta de pendiente declarado: qué falta, por qué y qué viene

@@ -5,18 +5,18 @@
 
 mod_sec01_ui <- function(id) {
   ns <- NS(id)
-  tagList(
+  div(
+    class = "perfil-seccion perfil-seccion-produccion",
     section_header("01", "Producción"),
-    section_intro("Cuánto cobre extrae esta mina y qué peso tiene en la producción nacional."),
     layout_columns(
       col_widths = c(6, 6),
       card(
-        card_header("Producción de cobre mina - absoluta (miles de TM de fino)"),
+        card_header(panel_header("Producción minera", "miles TM de fino")),
         highchartOutput(ns("chart_abs"), height = "340px"),
         nota_pie(ns("nota_abs"))
       ),
       card(
-        card_header("Participación en la producción nacional (%)"),
+        card_header(panel_header("Participación nacional", "% del total país")),
         highchartOutput(ns("chart_rel"), height = "340px"),
         nota_pie(texto = "Producción de la empresa sobre el total país. Fuente: COCHILCO.")
       )

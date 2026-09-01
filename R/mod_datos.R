@@ -40,10 +40,7 @@ mod_datos_ui <- function(id) {
 mod_datos_server <- function(id) {
   moduleServer(id, function(input, output, session) {
 
-    con <- abrir_datos_financieros(database_financiera_path, read_only = TRUE)
-    session$onSessionEnded(function() {
-      cerrar_datos_financieros(con)
-    })
+    con <- db_connection
 
     # Empresas publicadas con el dataset elegido disponible en DuckDB.
     empresas_disponibles <- reactive({

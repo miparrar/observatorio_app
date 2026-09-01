@@ -5,7 +5,6 @@ suppressPackageStartupMessages({
   library(DT)
   library(dplyr)
   library(tidyr)
-  library(arrow)
   library(readr)
   library(writexl)
   library(yaml)
@@ -14,8 +13,7 @@ suppressPackageStartupMessages({
 })
 
 # Raiz de datos del pipeline (observatorio_minero). En LOCAL apunta al repo
-# hermano. En DEPLOY (shinyapps/Connect) el bundle incluye cache/ y src/
-# planos en el working dir (ver scripts/prepara_deploy.R).
+# hermano. En DEPLOY puede reemplazarse por OBS_DB_TARGET=md:<base>.
 dir_app    <- "."                                                # i18n, R
 dir_data   <- Sys.getenv("OBS_DATA_DIR", file.path("..", "observatorio_minero"))  # cache/
 dir_config <- Sys.getenv("OBS_CONFIG_DIR", file.path(dir_data, "src"))         # YAMLs
@@ -50,6 +48,23 @@ for (f in list.files(file.path(dir_app, "R"), pattern = "\\.R$", full.names = TR
 perfil_cfg <- yaml::read_yaml(file.path(dir_config, "perfil.yaml"))
 duckdb_cfg <- yaml::read_yaml(file.path(dir_config, "duckdb.yaml"))
 database_financiera_path <- file.path(dir_data, duckdb_cfg$database$path)
+database_financiera_target <- resolver_target_observatorio(
+  local_path = database_financiera_path,
+  motherduck_database = duckdb_cfg$database$motherduck_database,
+  override = Sys.getenv("OBS_DB_TARGET")
+)
+db_connection <- abrir_conexion_observatorio(
+  database_financiera_target,
+  read_only = TRUE,
+  extension_directory = duckdb_cfg$database$extension_directory,
+  threads = duckdb_cfg$database$threads,
+  memory_limit = duckdb_cfg$database$memory_limit
+)
+onStop(function() {
+  cerrar_conexion_observatorio(db_connection)
+  db_connection <<- NULL
+})
+message("Fuente de datos: ", database_financiera_target)
 duckdb_financiero_schema <- duckdb_cfg$database$schema
 tablas_financieras <- setNames(
   vapply(duckdb_cfg$datasets, function(x) x$table, character(1)),
@@ -57,8 +72,7 @@ tablas_financieras <- setNames(
 )
 
 datos_financieros <- local({
-  con <- abrir_datos_financieros(database_financiera_path, read_only = TRUE)
-  on.exit(cerrar_datos_financieros(con), add = TRUE)
+  con <- db_connection
   tablas_perfil <- tablas_financieras[c(
     "tasa_ganancia", "endeudamiento", "distribucion"
   )]
@@ -91,10 +105,26 @@ if (nrow(series_tg) == 0) {
   )
 }
 
-# Series de contexto COCHILCO (make cochilco). Tibble vacio si faltan.
+# Series de contexto COCHILCO. Se leen desde el mismo artefacto DuckDB que los
+# productos financieros; asi el deploy no depende de Parquet sueltos.
+duckdb_contexto_schema <- duckdb_cfg$database$context_schema
+datos_contexto <- local({
+  con <- db_connection
+  setNames(
+    lapply(duckdb_cfg$context_datasets, function(dataset) {
+      leer_tabla_observatorio(
+        con,
+        duckdb_contexto_schema,
+        dataset$table
+      )
+    }),
+    vapply(duckdb_cfg$context_datasets, function(dataset) dataset$name, character(1))
+  )
+})
+
 serie_cochilco <- function(nombre) {
-  p <- file.path(dir_data, "cache", "cochilco", paste0(nombre, ".parquet"))
-  if (!fs::file_exists(p)) {
+  data <- datos_contexto[[nombre]]
+  if (is.null(data) || nrow(data) == 0) {
     return(tibble::tibble(
       anio = integer(),
       valor = double(),
@@ -102,7 +132,7 @@ serie_cochilco <- function(nombre) {
       item = character()
     ))
   }
-  arrow::read_parquet(p) |> dplyr::arrange(anio)
+  data |> dplyr::arrange(anio)
 }
 # Precio del cobre BML nominal (una vez): contexto de la rentabilidad (sec 01)
 # y de la produccion (sec 04). Se recorta a los anios de cada empresa aguas abajo.
@@ -118,9 +148,8 @@ item_produccion <- setNames(
 empresas_perfil <- perfil_cfg$empresas
 choices_empresa <- setNames(empresas_perfil, nombre_empresa[empresas_perfil])
 
-# NOTA: la serie del investigador (cache/rentabilidad_codelco.parquet) NO se
-# publica en el dashboard: es el oraculo de VALIDACION del pipeline (make
-# verifica), no un producto. El dashboard muestra solo resultados del pipeline.
+# La serie del investigador (cache/rentabilidad_codelco.parquet) es una
+# referencia metodologica externa. No se carga en DuckDB ni se publica.
 
 # --- Helpers de formato ---
 fmt_pct <- function(x, decimales = 1) {

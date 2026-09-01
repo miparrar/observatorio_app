@@ -1,14 +1,16 @@
-# mod_chat_documental.R - interfaz minima del asistente documental.
+# mod_chat_documental.R - interfaz del asistente documental.
 
 mod_chat_documental_ui <- function(id) {
   ns <- NS(id)
-  tagList(
+  div(
+    class = "perfil-seccion perfil-seccion-chat",
+    section_header("05", txt$chat_documental$titulo),
     div(
-      class = "mb-3",
-      h2(txt$chat_documental$titulo),
-      p(class = "text-muted", txt$chat_documental$descripcion)
+      class = "chat-intro",
+      span(class = "chat-kicker", "Evidencia documental"),
+      p(txt$chat_documental$descripcion)
     ),
-    uiOutput(ns("contenido"))
+    div(class = "chat-shell", uiOutput(ns("contenido")))
   )
 }
 
@@ -18,7 +20,14 @@ mod_chat_documental_server <- function(
 ) {
   moduleServer(id, function(input, output, session) {
     config_path <- file.path(dir_config, "chat_documental.yaml")
-    database_path <- file.path(dir_data, "cache", "observatorio_minero.duckdb")
+    database_target <- Sys.getenv(
+      "OBS_CHAT_DB_TARGET",
+      unset = database_financiera_target
+    )
+    usa_conexion_compartida <- identical(
+      database_target,
+      database_financiera_target
+    )
 
     error_config <- tryCatch(
       {
@@ -28,12 +37,28 @@ mod_chat_documental_server <- function(
       error = function(error) conditionMessage(error)
     )
 
+    con <- NULL
+    error_conexion <- NULL
+    if (is.null(error_config)) {
+      if (usa_conexion_compartida) {
+        con <- db_connection
+      } else {
+        error_conexion <- tryCatch(
+          {
+            con <- abrir_corpus_documental(database_target, read_only = TRUE)
+            NULL
+          },
+          error = function(error) conditionMessage(error)
+        )
+      }
+    }
+
     estado <- if (!is.null(error_config)) {
       list(ok = FALSE, message = error_config)
-    } else if (!fs::file_exists(database_path)) {
-      list(ok = FALSE, message = txt$chat_documental$corpus_faltante)
+    } else if (!is.null(error_conexion)) {
+      list(ok = FALSE, message = error_conexion)
     } else if (!corpus_documental_disponible(
-      database_path,
+      con,
       config$database$schema
     )) {
       list(ok = FALSE, message = txt$chat_documental$corpus_faltante)
@@ -44,6 +69,9 @@ mod_chat_documental_server <- function(
     }
 
     if (!estado$ok) {
+      if (!usa_conexion_compartida && !is.null(con)) {
+        cerrar_corpus_documental(con)
+      }
       output$contenido <- renderUI({
         bslib::card(
           bslib::card_header(txt$chat_documental$no_disponible),
@@ -53,10 +81,11 @@ mod_chat_documental_server <- function(
       return(invisible(NULL))
     }
 
-    con <- abrir_corpus_documental(database_path, read_only = TRUE)
-    session$onSessionEnded(function() {
-      cerrar_corpus_documental(con)
-    })
+    if (!usa_conexion_compartida) {
+      session$onSessionEnded(function() {
+        cerrar_corpus_documental(con)
+      })
+    }
 
     contexto_inicial <- if (shiny::is.reactive(contexto)) contexto() else contexto
     chat <- crear_chat_documental(con, config, contexto_inicial)
