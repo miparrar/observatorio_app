@@ -43,6 +43,14 @@ ui <- page_navbar(
         ), reserved = TRUE)
       )
     ),
+    # Cuando la app vive dentro del sitio Quarto, la navegación superior la
+    # aporta el sitio. La app independiente conserva su navbar completa.
+    tags$script(HTML('
+      (() => {
+        const embedded = new URLSearchParams(window.location.search).get("embed") === "1";
+        if (embedded) document.documentElement.classList.add("obs-embedded");
+      })();
+    ')),
     # La pestaña se puede abrir desde Quarto mediante ?tab=...; el clic
     # ocurre cuando Shiny ya terminó de enlazar sus controles.
     tags$script(HTML('
@@ -54,6 +62,12 @@ ui <- page_navbar(
       });
     ')),
     tags$style(HTML(
+      "html.obs-embedded .bslib-page-navbar > .navbar {",
+      "  display: none !important;",
+      "}",
+      "html.obs-embedded .bslib-page-navbar {",
+      "  padding-top: 0 !important;",
+      "}",
       ".bslib-page-navbar > .navbar {",
       "  position: sticky;",
       "  top: 0;",

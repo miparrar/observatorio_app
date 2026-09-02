@@ -3358,7 +3358,10 @@
       "checksum": "6ca34060b7edfa1ce01ba682e88b1d67"
     },
     "ui.R": {
-      "checksum": "ccc9a35f5fe239f0a8283a754f4a84e9"
+      "checksum": "8ea904b5cb2e33793db8dc4ee9864ff7"
+    },
+    "ui.R.orig": {
+      "checksum": "3147520e94eb84396b8475a630ba2c47"
     },
     "www/assets/brand/observatorio-logo.svg": {
       "checksum": "fbd0a853dab6b571e60f153a907fed5b"
